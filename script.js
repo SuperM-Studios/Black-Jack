@@ -1,23 +1,26 @@
 const pfad = "./deck/";
 let deck = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152];
-let ablage = [];
-let bildcounter;
-let score = 0;
-let kartenwert = 0;
+let ablage = [];        //Wird später gebraucht um
+let bildcounter;        //Wird später gebraucht um
+let score = 0;          //Wird später gebraucht um
+let kartenwert = 0;     //Wird später gebraucht um
 
 function allowDrop(ev) {
     ev.preventDefault();
 }
+
 function drag(ev) {
     // Die dataTransfer.setData() Methode legt den Datentypen und
     // den Wert der gedraggeten Data fest 
     ev.dataTransfer.setData("text", ev.target.id);
 }
+
 function flip(data) {
     document.getElementById(data).style.animationName = "rotieren";
     document.getElementById(data).style.webkitAnimationDuration = "0.2s";
     document.getElementById(data).style.animationTimingFunction = "linear";  
 }
+
 function setKartenwert(kartenId) {
     // Legt die Variable kartenwert mittels der kartenId fest.
     switch(kartenId) {
