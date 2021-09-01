@@ -156,6 +156,9 @@ function drop(ev) {
         console.log("data : " + data + "\nkartenwert : " + kartenwert + 
         "\nscore : " + score);
 
+        // Der Score wird in HTML ausgegeben
+        document.getElementById("score").innerHTML = ("score : " + score);
+
         //Karte wird in HTML von einem Stapel auf die Ablage umgehängt
         ev.target.appendChild(document.getElementById(data));
 
@@ -170,8 +173,8 @@ function drop(ev) {
 }
 
 function shuffle(){
-    // Gibt irgendeine ganze Zahl zwischen 100 und 153 zurück, die nicht 
-    // bereits zurückgegeben wurde.
+    // Shuffled das deck array, entfernt dessen letztes 
+    // Element und hängt es an das ablage Array.
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
@@ -180,5 +183,6 @@ function shuffle(){
     ablage.push(deck.pop());
     //console.log("ablage : " + ablage);
 
+    // Gibt das letzte Element des ablage Arrays zurück.
     return ablage[ablage.length - 1];
 }
