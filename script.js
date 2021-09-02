@@ -13,11 +13,13 @@ function drag(ev) {
     // den Wert der gedraggeten Data fest 
     ev.dataTransfer.setData("text", ev.target.id);
 }
+
 function flip(data) {
     document.getElementById(data).style.animationName = "rotieren";
     document.getElementById(data).style.webkitAnimationDuration = "0.2s";
     document.getElementById(data).style.animationTimingFunction = "linear";  
 }
+
 function setKartenwert(kartenId) {
     // Legt die Variable kartenwert mittels der kartenId fest.
     switch(kartenId) {
@@ -134,6 +136,9 @@ function drop(ev) {
 
     var data = ev.dataTransfer.getData("text");
 
+    deck.splice(deck.indexOf(deck[ parseInt(Math.random()*deck.length) ]))
+    console.log(deck);
+
     if(ev.target.id === "ablage" || ev.target.id === "stapel" ){
         //document.getElementById(data).style.zIndex = counter++;
         //alert( document.getElementById(data).style.zIndex);
@@ -164,6 +169,10 @@ function drop(ev) {
 
         //soll nicht mehr bewegt werden
         document.getElementById(data).draggable = false;
+
+        if (score > 10){
+            document.getElementById("weiter").setAttribute("disabled", "true");
+        }
 
 
     }
