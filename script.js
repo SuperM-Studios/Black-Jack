@@ -1,16 +1,12 @@
 const pfad = "./deck/";
-let deck = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152];
-let ablage = [];
-let bildcounter;
-let score = 0;
-let kartenwert = 0;
+bildcounter = 100;
+counter = 0;
+kartenwert = 0;
 
 function allowDrop(ev) {
     ev.preventDefault();
 }
 function drag(ev) {
-    // Die dataTransfer.setData() Methode legt den Datentypen und
-    // den Wert der gedraggeten Data fest 
     ev.dataTransfer.setData("text", ev.target.id);
 }
 
@@ -23,6 +19,7 @@ function flip(data) {
 function setKartenwert(kartenId) {
     // Legt die Variable kartenwert mittels der kartenId fest.
     switch(kartenId) {
+
             //Ass
             case 101:
             case 114:
@@ -31,7 +28,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 11;
                 break;
 
-            // 2
             case 102:
             case 115:
             case 128:
@@ -39,7 +35,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 2;
                 break;
 
-            // 3
             case 103:
             case 116:
             case 129:
@@ -47,7 +42,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 3;
                 break;
 
-            // 4
             case 104:
             case 117:
             case 130:
@@ -55,7 +49,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 4;
                 break;
 
-            // 5
             case 105:
             case 118:
             case 131:
@@ -63,7 +56,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 5;
                 break;
 
-            // 6
             case 106:
             case 119:
             case 132:
@@ -71,7 +63,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 6;
                 break;
 
-            // 7
             case 107:
             case 120:
             case 133:
@@ -79,7 +70,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 7;
                 break;
 
-            // 8
             case 108:
             case 121:
             case 134:
@@ -87,7 +77,6 @@ function setKartenwert(kartenId) {
                 kartenwert = 8;
                 break;
 
-            // 9
             case 109:
             case 122:
             case 135:
@@ -127,6 +116,7 @@ function setKartenwert(kartenId) {
                 kartenwert = 10;
                 break;
         }
+
 }
 function drop(ev) {
     // Normalerweise können Data oder Elemente nicht in andere Elemente 
@@ -158,8 +148,6 @@ function drop(ev) {
         score += kartenwert;
 
         document.getElementById(data).setAttribute("kartenwert",kartenwert);
-        console.log("data : " + data + "\nkartenwert : " + kartenwert + 
-        "\nscore : " + score);
 
         // Der Score wird in HTML ausgegeben
         document.getElementById("score").innerHTML = ("score : " + score);
