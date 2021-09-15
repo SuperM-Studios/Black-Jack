@@ -9,17 +9,30 @@ function allowDrop(ev) {
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
 }
+function drop(ev) {
+    ev.preventDefault();
 
-function flip(data) {
-    document.getElementById(data).style.animationName = "rotieren";
-    document.getElementById(data).style.webkitAnimationDuration = "0.2s";
-    document.getElementById(data).style.animationTimingFunction = "linear";  
-}
 
-function setKartenwert(kartenId) {
-    // Legt die Variable kartenwert mittels der kartenId fest.
-    switch(kartenId) {
+    var data = ev.dataTransfer.getData("text");
 
+    if(ev.target.id === "ablage" || ev.target.id === "stapel" ){
+        //document.getElementById(data).style.zIndex = counter++;
+        //alert( document.getElementById(data).style.zIndex);
+
+
+        //Animation
+        document.getElementById(data).style.animationName = "rotieren";
+        document.getElementById(data).style.webkitAnimationDuration = "0.2s";
+        document.getElementById(data).style.animationTimingFunction = "linear";
+
+        //shuffle - splice Array & random
+        bildcounter++;
+        //a.splice(a.indexOf(a[ parseInt(Math.random()*a.length) ]))
+
+        //Rückseitenbild wird überschrieben mit Vorderseitenbild
+        document.getElementById(data).src = pfad + bildcounter +".gif";
+
+        switch(bildcounter) {
             //Ass
             case 101:
             case 114:
@@ -117,50 +130,13 @@ function setKartenwert(kartenId) {
                 break;
         }
 
-}
-function drop(ev) {
-    // Normalerweise können Data oder Elemente nicht in andere Elemente 
-    // gedropped werden. Um das Droppen zu ermöglichen muss also 
-    // zunächst das Defaulthandling verhindert werden (preventDefault()).
-    ev.preventDefault();
-
-    var data = ev.dataTransfer.getData("text");
-
-    deck.splice(deck.indexOf(deck[ parseInt(Math.random()*deck.length) ]))
-    console.log(deck);
-
-    if(ev.target.id === "ablage" || ev.target.id === "stapel" ){
-        //document.getElementById(data).style.zIndex = counter++;
-        //alert( document.getElementById(data).style.zIndex);
-
-        
-        //Animation
-        flip(data);
-
-        //shuffle - splice deckay & random
-        bildcounter = shuffle();
-        //console.log("bildcounter : " + bildcounter);
-
-        //Rückseitenbild wird überschrieben mit Vorderseitenbild
-        document.getElementById(data).src = pfad + bildcounter +".gif";
-
-        setKartenwert(bildcounter);
-        score += kartenwert;
-
         document.getElementById(data).setAttribute("kartenwert",kartenwert);
-
-        // Der Score wird in HTML ausgegeben
-        document.getElementById("score").innerHTML = ("score : " + score);
 
         //Karte wird in HTML von einem Stapel auf die Ablage umgehängt
         ev.target.appendChild(document.getElementById(data));
 
         //soll nicht mehr bewegt werden
         document.getElementById(data).draggable = false;
-
-        if (score > 10){
-            document.getElementById("weiter").setAttribute("disabled", "true");
-        }
 
 
     }
@@ -170,16 +146,5 @@ function drop(ev) {
 }
 
 function shuffle(){
-    // Shuffled das deck array, entfernt dessen letztes 
-    // Element und hängt es an das ablage Array.
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-      }
-    //console.log("deck : " + deck);
-    ablage.push(deck.pop());
-    //console.log("ablage : " + ablage);
 
-    // Gibt das letzte Element des ablage Arrays zurück.
-    return ablage[ablage.length - 1];
 }
