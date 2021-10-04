@@ -5,9 +5,9 @@ let bildcounter;
 let score = 0;
 let gegnerscore = 0;
 let kartenwert = 0;
-let versatz = 0					//Wird später gebraucht um um den Versatz der Karte zu bewerkstelligen. Der Wert wird wenn der Gegner beginnt wieder auf 0 gesetzt.
-let obersteid = 52				//Wird später gebraucht um dem "Gegner zu sagen, welche Karte am obersten im Stapel liegt. (Ist sehr umständlich und kann optimiert werden.)
-let asseimdeck = 0
+let versatz = 0;					//Wird später gebraucht um um den Versatz der Karte zu bewerkstelligen. Der Wert wird wenn der Gegner beginnt wieder auf 0 gesetzt.
+let obersteid = deck.length;				//Wird später gebraucht um dem "Gegner zu sagen, welche Karte am obersten im Stapel liegt. (Ist sehr umständlich und kann optimiert werden.)
+let asseimdeck = 0;
 spieleramzug = true;
 
 allesaktivieren();
@@ -160,20 +160,16 @@ function drop(ev) {
         //Rückseitenbild wird überschrieben mit Vorderseitenbild
         document.getElementById(data).src = pfad + bildcounter + ".gif";
 
-        console.log(bildcounter);
-
         setKartenwert(bildcounter);
         if (kartenwert === 11){
             asseimdeck += 1;
         }
 
-        console.log(kartenwert);
-
         score += kartenwert;
 
         document.getElementById(data).setAttribute("kartenwert", kartenwert);
         console.log("data : " + data + "\nkartenwert : " + kartenwert +
-            "\nscore : " + score);
+            "\nscore : " + score + "\noid : " + obersteid);
 
         //Karte wird in HTML von einem Stapel auf die Ablage umgehängt
         ev.target.appendChild(document.getElementById(data));
@@ -198,13 +194,13 @@ function drop(ev) {
         versatz += 15
 
         //Überprüfung ob jemand gewonnen hat. Rückgabewert: True = Gewonnen, False = Verloren, Null = Weiterspielen
-        console.log(diesefunktionermitteltobjemandgewonnenhat());
+        console.log(checkWin());
 
-        if (diesefunktionermitteltobjemandgewonnenhat() === true){
+        if (checkWin() === true){
             duhastverloren();
         }
 
-        else if (diesefunktionermitteltobjemandgewonnenhat() === false){
+        else if (checkWin() === false){
             duhastgewonnen();
         }
 
@@ -252,7 +248,7 @@ function hold() {
 
             //Animation
 
-            var data = document.getElementById(bildcounter);
+            var data = document.get;
             //           ev.dataTransfer.getData("text");
             flip(data);
 
@@ -308,20 +304,7 @@ function shuffle() {
     return ablage[ablage.length - 1];
 }
 
-/**
- function gegnerZieht() {
-
-    while (diesefunktionermitteltobjemandgewonnenhat(spieleramzug) === true) {
-
-    }
-    gegnerscore += Math.round(Math.random() * (11));
-
-
-}
- **/
-
-
-function diesefunktionermitteltobjemandgewonnenhat() {
+function checkWin() {
     //null bedeutet weiterspielen
     //true bedeutet gewonnen
     //false bedeutet verloren
