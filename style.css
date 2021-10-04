@@ -15,9 +15,38 @@
     top: 50px;
     left: 250px;
     border: 3px solid black;
-    width: 150px;
+    width: 350px;
     height: 250px;
     position: absolute;
+}
+
+#gegnerablage{
+    top: 320px;
+    left: 250px;
+    border: 3px solid black;
+    width: 350px;
+    height: 250px;
+    position: absolute;
+}
+
+.score{
+    top: 320px;
+    border: 3px solid black;
+    width: 150px;
+    height: 20px;
+    position: absolute;
+}
+
+#gscore{
+    top: 350px
+}
+
+#hold{
+    position: absolute;
+    top: 380px;
+    left: 10px;
+    height: 50px;
+    width: 150px;
 }
 
 .karte{

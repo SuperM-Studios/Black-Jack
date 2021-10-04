@@ -4,7 +4,6 @@
     <head>
 
         <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
 
     </head>
     <body>
@@ -68,8 +67,25 @@
             <img class="karte" id="52" src="./deck/100.gif"  draggable="true" ondragstart="drag(event)">
         </div>
 
-        <div id="ablage" ondrop="drop(event)" ondragover="allowDrop(event)">
-            Ablage
+        <div title="ablage" id="ablage" ondrop="drop(event)" ondragover="allowDrop(event)">
+            Ablage:
+
         </div>
+
+        <div title="gegnerAblage" id="gegnerablage" ondrop="" ondragover="">
+            Gegner Ablage:
+        </div>
+
+        <div class="score "title="eigener score" id="escore">
+            Eigener score: 0
+        </div>
+
+        <div class="score" title="gegner score" id="gscore">
+            Gegner score: 0
+        </div>
+
+        <button id="hold" onclick="hold(event)">Hold</button>
+
+        <script src="script.js"></script>
     </body>
 </html>
