@@ -224,7 +224,7 @@ function drop(ev) {
     }
 }
 
-function hold() {
+function hold(ev) {
     spieleramzug = false;
     allesdeaktivieren();
     myStartFunction();
