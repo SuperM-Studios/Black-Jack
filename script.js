@@ -226,18 +226,8 @@ function drop(ev) {
 
 function hold() {
     spieleramzug = false;
-    document.getElementById("hold").setAttribute("disabled", "");
-
-    for (i = 1; i < 52; i++) {
-        document.getElementById(i).setAttribute("draggable", false)
-    }
-
-    // gegnerZieht();
-
-
-//	Ruft Zeile 209-266 auf. Wird als aller letztes gemacht.
+    allesdeaktivieren();
     myStartFunction();
-
 
     function myStartFunction() {
         setTimeout(function () {
@@ -248,8 +238,7 @@ function hold() {
 
             //Animation
 
-            var data = document.get;
-            //           ev.dataTransfer.getData("text");
+            let obersteidAlsString = (obersteid.toString());
             flip(data);
 
             //console.log("bildcounter : " + bildcounter);
@@ -325,7 +314,6 @@ function checkWin() {
     else {
         return null;
     }
-
     //Wenn der Score über 21 ist und der Spieler ein Ass hat, wird der score -10 gerechnet
 }
 
@@ -337,7 +325,6 @@ function duhastverloren() {
     } else {
         allesdeaktivieren();
     }
-
 }
 
 function duhastgewonnen() {
@@ -347,7 +334,6 @@ function duhastgewonnen() {
     } else {
         allesdeaktivieren();
     }
-
 }
 
 function allesaktivieren() {
