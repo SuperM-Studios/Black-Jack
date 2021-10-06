@@ -28,6 +28,10 @@ function flip(data) {
     document.getElementById(data).style.animationTimingFunction = "linear";
 }
 
+function setKartenwertAlterativ(kartenId){
+    kartenwert = Math.min((kartenId - 101) % 13,9) + 1;
+}
+
 function setKartenwert(kartenId) {
     // Legt die Variable kartenwert mittels der kartenId fest.
     switch (kartenId) {
@@ -160,7 +164,7 @@ function drop(ev) {
         //Rückseitenbild wird überschrieben mit Vorderseitenbild
         document.getElementById(data).src = pfad + bildcounter + ".gif";
 
-        setKartenwert(bildcounter);
+        setKartenwertAlterativ(bildcounter);
         if (kartenwert === 11){
             asseimdeck += 1;
         }
@@ -177,7 +181,7 @@ function drop(ev) {
         //soll nicht mehr bewegt werden
         document.getElementById(data).draggable = false;
 
-        //Wenn man Asse im Deck hat, werden diese zum Wert 1 konvertiert.
+        //Wenn man Asse im Deck hat, werden diese zum vom Wert 11 zu 1 konvertiert.
         if (score > 21 && asseimdeck > 0){
             score -= 10;
             asseimdeck -= 1;
@@ -191,7 +195,7 @@ function drop(ev) {
 
         //Gedroppte Karte wird nach rechts versetzt
         document.getElementById(data).style.left = versatz + "px";
-        versatz += 15
+        versatz += 15;
 
         //Überprüfung ob jemand gewonnen hat. Rückgabewert: True = Gewonnen, False = Verloren, Null = Weiterspielen
         console.log(checkWin());
@@ -204,78 +208,84 @@ function drop(ev) {
             duhastgewonnen();
         }
 
-        /*
-               else {
-                    duhastverloren();
-                }
-        */
-
         //Hold Button wird aktiviert
         if (score > 10) {
             document.getElementById("hold").removeAttribute("disabled");
             document.getElementById("hold").enabled = true;
         }
 
-
-        //TODO: Das ausrechnen für den Gewinn in eine andere Methode auslagern
-        //TODO: Wenn gewonnen gegnerZieht Methode aufrufen (Die Methode an sich muss auch noch geschrieben werden.)
-    } else {
-        alert("In die Karte reinlegen nicht möglich!");
-    }
+        } else {
+            alert("In die Karte reinlegen nicht möglich!");
+        }
 }
 
 function hold(ev) {
     spieleramzug = false;
+    asseimdeck = 0;
+    versatz = 0;
     allesdeaktivieren();
-    myStartFunction();
+
+    //while (checkWin() === false) {
+        myStartFunction();
+    //}
 
     function myStartFunction() {
-        setTimeout(function () {
-            alert("Gegner muss jetzt ziehen!");
+            setTimeout(function () {
 
-            //shuffle - splice deckay & random
-            bildcounter = shuffle();
+                console.log("Gegner muss jetzt ziehen!");
 
-            //Animation
+                //shuffle - splice deckay & random
+                bildcounter = shuffle();
+                let data = bildcounter - 100;
+                data.toString();
 
-            let obersteidAlsString = (obersteid.toString());
-            flip(data);
+                console.log("Der wert von bildcounter = " + bildcounter);
 
-            //console.log("bildcounter : " + bildcounter);
+                document.getElementById(data).src = pfad + bildcounter + ".gif";
 
-            //Rückseitenbild wird überschrieben mit Vorderseitenbild
-            document.getElementById(data).src = pfad + bildcounter + ".gif";
+                // data = bildcounter.toString();
 
-            setKartenwert(bildcounter);
-            score += kartenwert;
+                setKartenwert(bildcounter);
+                if (kartenwert === 11){
+                    asseimdeck += 1;
+                }
 
-            document.getElementById(data).setAttribute("kartenwert", kartenwert);
-            console.log("data : " + data + "\nkartenwert : " + kartenwert +
-                "\nscore : " + score);
+                gegnerscore += kartenwert;
 
-            //Karte wird in HTML von einem Stapel auf die Ablage umgehängt
-            ev.target.appendChild(document.getElementById(data));
+                flip(data);
 
-            //soll nicht mehr bewegt werden
-            document.getElementById(data).draggable = false;
+                //console.log("Der wert von kartenwert = " + kartenwert);
+                //console.log("Der wert von gegnerscore = " + gegnerscore);
 
-            //Score wird im HTML amgezeigt
-            document.getElementById("escore").innerHTML = "Eigener score: " + score;
+                document.getElementById(data).setAttribute("kartenwert", kartenwert);
+                console.log("data : " + data + "\nkartenwert : " + kartenwert +
+                    "\ngegnerscore : " + gegnerscore);
 
-            //Welche Karte liegt ganz oben auf dem Stapel (für die Gegner zieht Methode)
-            id -= 1;
+                //Karte wird in HTML von einem Stapel auf die Ablage umgehängt
+                document.getElementById("gegnerablage").appendChild(document.getElementById(data));
 
-            //Hold Button wird aktiviert
-            if (score > 10) {
-                document.getElementById("hold").removeAttribute("disabled");
-                document.getElementById("hold").enabled = true;
-            }
+                //Score wird im HTML amgezeigt
+                document.getElementById("gscore").innerHTML = "Gegner score: " + gegnerscore;
 
+                //Gedroppte Karte wird nach rechts versetzt
+                document.getElementById(data).style.left = versatz + "px";
+                versatz += 15;
 
-            //TODO: Das ausrechnen für den Gewinn in eine andere Methode auslagern
-            //TODO: Wenn gewonnen gegnerZieht Methode aufrufen (Die Methode an sich muss auch noch geschrieben werden.)
-            alert("Gegner hat gezogen!");
-        }, 1000);
+                if (gegnerscore > 21 && asseimdeck > 0){
+                    score -= 10;
+                    asseimdeck -= 1;
+                }
+
+                console.log("Gegner hat gezogen!");
+
+                if (checkWin() === true){
+                    duhastverloren();
+                }
+
+                else if (checkWin() === false){
+                    duhastgewonnen();
+                }
+            }, 1000);
     }
 }
 
@@ -295,8 +305,8 @@ function shuffle() {
 
 function checkWin() {
     //null bedeutet weiterspielen
-    //true bedeutet gewonnen
-    //false bedeutet verloren
+    //false bedeutet gewonnen
+    //true bedeutet verloren
 
     if (score > 21) {
         return true;
@@ -304,7 +314,7 @@ function checkWin() {
 
     // Wenn gegner weniger als 21 und mehr als der Spieler hat.
     else if (gegnerscore < 21 && gegnerscore > score){
-        return false;
+        return true;
     }
 
     else if (gegnerscore > 21){
@@ -314,7 +324,6 @@ function checkWin() {
     else {
         return null;
     }
-    //Wenn der Score über 21 ist und der Spieler ein Ass hat, wird der score -10 gerechnet
 }
 
 function duhastverloren() {
@@ -329,7 +338,7 @@ function duhastverloren() {
 
 function duhastgewonnen() {
 
-    if (confirm("Herzlichen Glückwunsch \n Du hast gewonnen! \n Möchtest du erneut spielen?")) {
+    if (confirm("Herzlichen Glückwunsch\nDu hast gewonnen!\n Möchtest du erneut spielen?")) {
         window.location.reload(true);
     } else {
         allesdeaktivieren();
