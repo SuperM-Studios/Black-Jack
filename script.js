@@ -16,7 +16,6 @@ for (let i = 1; i < 53; i++) {
 	htmlkarte.setAttribute("id", i);
 	htmlkarte.setAttribute("src", "./deck/100.gif");
 	htmlkarte.setAttribute("draggable", "true");
-	htmlkarte.setAttribute("ondragstart", "drag(event)");
 }
 
 allesaktivieren();
@@ -42,12 +41,16 @@ function setKartenwert(kartenId){
 function drop(ev) {
 
     ev.preventDefault();
-    const data = ev.dataTransfer.getData("text");
+
+    bildcounter = shuffle();
+
+    let data = bildcounter - 100;
+    data = data.toString();
+    console.log(data);
 
     if (ev.target.id === "ablage" || ev.target.id === "stapel") {
 
         flip(data);
-        bildcounter = shuffle();
 
         document.getElementById(data).src = pfad + bildcounter + ".gif";
         setKartenwert(bildcounter);
@@ -183,7 +186,7 @@ function duhastgewonnen() {
 
 function unentschieden() {
 
-	if (confirm("Unentchieden!\nMöchtest du erneut spielen?")) {
+	if (confirm("Unentschieden!\nMöchtest du erneut spielen?")) {
 		window.location.reload(true);
 	}
 	else {
@@ -193,7 +196,7 @@ function unentschieden() {
 
 function allesaktivieren() {
     document.getElementById("hold").disabled = true;
-    for (i = 1; i < 52; i++) {
+    for (let i = 1; i < 52; i++) {
         document.getElementById(i).setAttribute("draggable", "true")
     }
 }
@@ -201,9 +204,10 @@ function allesaktivieren() {
 function allesdeaktivieren() {
     document.getElementById("hold").setAttribute("disabled", "");
 
-    for (i = 1; i < 52; i++) {
-		index = i;
-		index.toString();
+    let index;
+    for (let i = 1; i < 52; i++) {
+        index = i;
+        index.toString();
         document.getElementById(index).setAttribute("draggable", "false")
     }
 }
