@@ -9,9 +9,9 @@ let versatz = 0;
 let asseimdeck = 0;
 
 for (let i = 1; i < 53; i++) {
-	var htmlkarte = new Image;
-	document.getElementById("stapel").appendChild(htmlkarte);
-	
+    let htmlkarte = new Image;
+    document.getElementById("stapel").appendChild(htmlkarte);
+
 	htmlkarte.setAttribute("class", "karte");
 	htmlkarte.setAttribute("id", i);
 	htmlkarte.setAttribute("src", "./deck/100.gif");
@@ -23,10 +23,6 @@ allesaktivieren();
 
 function allowDrop(ev) {
     ev.preventDefault();
-}
-
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function flip(data) {
@@ -44,38 +40,49 @@ function setKartenwert(kartenId){
 }
 
 function drop(ev) {
-	
+
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
+    const data = ev.dataTransfer.getData("text");
+
     if (ev.target.id === "ablage" || ev.target.id === "stapel") {
+
         flip(data);
         bildcounter = shuffle();
+
         document.getElementById(data).src = pfad + bildcounter + ".gif";
         setKartenwert(bildcounter);
         score += kartenwert;
+
         document.getElementById(data).setAttribute("kartenwert", kartenwert);
-        console.log("data : " + data + "\nkartenwert : " + kartenwert +
-            "\nscore : " + score + "\noid : ");
+
         ev.target.appendChild(document.getElementById(data));
+
+        //Soll nicht mehr bewegt werden
         document.getElementById(data).draggable = false;
+
         if (score > 21 && asseimdeck > 0){
             score -= 10;
             asseimdeck -= 1;
         }
+
         document.getElementById("escore").innerHTML = "Eigener score: " + score;
+
         document.getElementById(data).style.left = versatz + "px";
         versatz += 15;
+
         checkWin();
+
         if (score > 10) {
             document.getElementById("hold").removeAttribute("disabled");
             document.getElementById("hold").enabled = true;
         }
-        } else {
-            alert("In die Karte reinlegen nicht möglich!");
-        }
+    }
+    else {
+        alert("In die Karte reinlegen nicht möglich!");
+    }
 }
 
-function hold(ev) {
+function hold() {
     asseimdeck = 0;
     versatz = 0;
     allesdeaktivieren();
@@ -83,21 +90,31 @@ function hold(ev) {
 
     function karteNachGegnerAblage() {
             setTimeout(function () {
+
                 bildcounter = shuffle();
+
                 let data = bildcounter - 100;
-                data.toString();
-                console.log("Der wert von bildcounter = " + bildcounter);
+                data = data.toString();
+
                 document.getElementById(data).src = pfad + bildcounter + ".gif";
+
                 setKartenwert(bildcounter);
                 gegnerscore += kartenwert;
+
                 flip(data);
+
                 document.getElementById(data).setAttribute("kartenwert", kartenwert);
-                console.log("data : " + data + "\nkartenwert : " + kartenwert +
-                    "\ngegnerscore : " + gegnerscore);
+
+                // Karte wird umgehängt
                 document.getElementById("gegnerablage").appendChild(document.getElementById(data));
+
+                //Score wird aktualisiert
                 document.getElementById("gscore").innerHTML = "Gegner score: " + gegnerscore;
+
+                //Versatz wird jeder Karte hinzugefügt und erhöht
                 document.getElementById(data).style.left = versatz + "px";
                 versatz += 15;
+
                 if (gegnerscore > 21 && asseimdeck > 0){
                     score -= 10;
                     asseimdeck -= 1;
@@ -109,52 +126,38 @@ function hold(ev) {
 }
 
 function shuffle() {
-    // Gibt irgendeine ganze Zahl zwischen 100 und 153 zurück, die nicht
-    // bereits zurückgegeben wurde.
+    // Gibt irgendeine ganze Zahl zwischen 100 und 153 zurück, die nicht bereits zurückgegeben wurde
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
     }
-    //console.log("deck : " + deck);
+
     ablage.push(deck.pop());
-    //console.log("ablage : " + ablage);
 
     return ablage[ablage.length - 1];
 }
 
 function checkWin() {
-    //null bedeutet weiterspielen
-    //false bedeutet gewonnen
-    //true bedeutet verloren
-
     if (score > 21) {
         duhastverloren();
 		allesdeaktivieren();
-		return;
     }
 
     // Wenn gegner weniger als 22 und mehr als der Spieler hat.
     else if (gegnerscore < 22 && gegnerscore > score){
         duhastverloren();
 		allesdeaktivieren();
-		return;
     }
 
     else if (gegnerscore > 21){
         duhastgewonnen();
 		allesdeaktivieren();
-		return;
     }
 
 	else if (score === gegnerscore){
 		unentschieden();
 		allesdeaktivieren();
-		return;
 	}
-
-    else {
-        return;
-    }
 }
 
 function duhastverloren() {
@@ -162,7 +165,7 @@ function duhastverloren() {
 
     if (confirm("Du hast verloren!\nMöchtest du erneut spielen?")) {
         window.location.reload(true);
-    } 
+    }
 	else {
         allesdeaktivieren();
     }
@@ -172,14 +175,14 @@ function duhastgewonnen() {
 
     if (confirm("Herzlichen Glückwunsch\nDu hast gewonnen!\nMöchtest du erneut spielen?")) {
         window.location.reload(true);
-    } 
+    }
 	else {
         allesdeaktivieren();
     }
 }
 
 function unentschieden() {
-	
+
 	if (confirm("Unentchieden!\nMöchtest du erneut spielen?")) {
 		window.location.reload(true);
 	}
